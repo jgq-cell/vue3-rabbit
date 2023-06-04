@@ -1,4 +1,19 @@
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { getCategoryAPI } from '@/apis/layout'
+
+// 查询header数据列表
+const CategoryList = ref([])
+const getCategory = async () => {
+  const res = await getCategoryAPI()
+  CategoryList.value = res.result
+}
+
+onMounted(() => {
+  getCategory()
+  console.log(CategoryList)
+})
+</script>
 
 <template>
   <header class="app-header">
@@ -7,12 +22,9 @@
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home">
-          <RouterLink to="/">首页</RouterLink>
+        <li class="home" v-for="item in CategoryList" :key="item.id">
+          <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
-        <li><RouterLink to="/">居家</RouterLink></li>
-        <li><RouterLink to="/">美食</RouterLink></li>
-        <li><RouterLink to="/">服饰</RouterLink></li>
       </ul>
       <div class="search">
         <i class="iconfont icon-search"></i>

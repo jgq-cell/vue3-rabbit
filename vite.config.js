@@ -15,7 +15,7 @@ export default defineConfig({
     }),
     Components({
       resolvers: [
-        // 1、配置elementPlus采用scss样式配色系统
+        // 1、配置elementPlus采用sass样式配色系统
         ElementPlusResolver({ importStyle: 'sass' })
       ]
     })
