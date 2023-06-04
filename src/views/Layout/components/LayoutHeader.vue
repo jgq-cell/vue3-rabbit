@@ -1,18 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { getCategoryAPI } from '@/apis/layout'
-
-// 查询header数据列表
-const CategoryList = ref([])
-const getCategory = async () => {
-  const res = await getCategoryAPI()
-  CategoryList.value = res.result
-}
-
-onMounted(() => {
-  getCategory()
-  console.log(CategoryList)
-})
+import { useCategoryStore } from '@/stores/category'
+// 触发获取导航列表的action
+const categoryStore = useCategoryStore()
 </script>
 
 <template>
@@ -22,7 +11,11 @@ onMounted(() => {
         <RouterLink to="/">小兔鲜</RouterLink>
       </h1>
       <ul class="app-header-nav">
-        <li class="home" v-for="item in CategoryList" :key="item.id">
+        <li
+          class="home"
+          v-for="item in categoryStore.CategoryList"
+          :key="item.id"
+        >
           <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
       </ul>

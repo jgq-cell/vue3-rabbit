@@ -1,7 +1,10 @@
 <script setup>
+import { useCategoryStore } from '@/stores/category'
+// VueUse: 获取基于window窗口的实时滚动距离
 import { useScroll } from '@vueuse/core'
-// 获取基于window窗口的实时滚动距离
 const { y } = useScroll(window)
+// 触发获取导航列表的action
+const categoryStore = useCategoryStore()
 </script>
 
 <template>
@@ -10,38 +13,12 @@ const { y } = useScroll(window)
       <RouterLink class="logo" to="/" />
       <!-- 导航区域 -->
       <ul class="app-header-nav">
-        {{
-          y
-        }}
-        <li class="home">
-          <RouterLink to="/">首页</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">居家</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">美食</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">服饰</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">母婴</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">个护</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">严选</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">数码</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">运动</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/">杂项</RouterLink>
+        <li
+          class="home"
+          v-for="item in categoryStore.CategoryList"
+          :key="item.id"
+        >
+          <RouterLink to="/">{{ item.name }}</RouterLink>
         </li>
       </ul>
 
