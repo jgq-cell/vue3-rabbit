@@ -20,7 +20,7 @@ onMounted(() => {
       </el-carousel-item>
     </el-carousel>
   </div>
-</template> 
+</template>
 
 <style scoped lang="scss">
 .home-banner {
