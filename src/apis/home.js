@@ -16,12 +16,12 @@ export function findNewApi() {
 // 获取人气推荐数据
 export const getHotAPI = () => {
   return httpInstance({
-    url: 'home/hot'
+    url: '/home/hot'
   })
 }
 // 获取所有商品模块
 export const getGoodsAPI = () => {
   return httpInstance({
-    url: 'home/goods'
+    url: '/home/goods'
   })
 }
