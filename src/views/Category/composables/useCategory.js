@@ -3,10 +3,10 @@ import { getCategoryAPI } from '@/apis/category'
 import { ref, onMounted } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 import { useRoute } from 'vue-router'
-const route = useRoute()
 
 export function useCategory() {
   const categoryData = ref({})
+  const route = useRoute()
   const getCategory = async (id = route.params.id) => {
     // route.params: 获取路由参数方式与路由配置保持一致
     const res = await getCategoryAPI(id) // route.params.id
