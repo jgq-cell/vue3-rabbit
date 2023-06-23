@@ -18,3 +18,21 @@ export const getCategoryFilterAPI = (id) => {
     }
   })
 }
+
+/**
+ * @description: 二级分类-基础列表数据
+ * @data {
+ *     category: 100500,
+ *     page: 1,
+ *     pageSize: 20,
+ *     sortField: 'publishTime' | 'orderNum' | 'evaluateNum'
+ *  }
+ * @returns {*}
+ */
+export const getSubCategoryAPI = (data) => {
+  return httpInstance({
+    url: '/category/goods/temporary',
+    method: 'POST',
+    data
+  })
+}
