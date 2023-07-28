@@ -1,5 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useMouseInElement } from '@vueuse/core'
+
+// 1.小图切换大图
 // 图片列表
 const imageList = [
   'https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png',
@@ -8,8 +11,49 @@ const imageList = [
   'https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg',
   'https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg'
 ]
-// 小图切换大图
 const activeIndex = ref(0)
+
+// 2.放大镜效果
+// 鼠标相对位置
+const target = ref(null)
+const { elementX, elementY, isOutside } = useMouseInElement(target)
+// 控制滑块跟随鼠标移动（监听elementX，一旦变化 重新设置left/top）
+// 有效移动范围：
+//    - 横向：100<elementX<300; left=elementX-滑块宽度一半
+//    - 纵向：100<elementY<300; top=elementY-滑块宽度一半
+// 边界距离控制
+//    - 横向: elementX>300 left=200; elementX<100 left=0
+//    - 纵向: elementY>300 top=200; elementY<100 top=0
+const left = ref(0)
+const top = ref(0)
+const positionX = ref(0)
+const positionY = ref(0)
+watch([elementX, elementY, isOutside], () => {
+  // 如果鼠标没有移入到盒子里面 直接不执行后面的逻辑
+  if (isOutside.value) return
+
+  // 有效移动范围
+  if (elementX.value > 100 && elementX.value < 300) {
+    left.value = elementX.value - 100
+  }
+  if (elementY.value > 100 && elementY.value < 300) {
+    top.value = elementY.value - 100
+  }
+  // 处理边界
+  if (elementX.value > 300) {
+    left.value = 200
+  } else if (elementX.value < 100) {
+    left.value = 0
+  }
+  if (elementY.value > 300) {
+    top.value = 200
+  } else if (elementY.value < 100) {
+    top.value = 0
+  }
+  // 控制大图显示：大图移动方向和小图方向相反且数值是小图的两倍
+  positionX.value = -left.value * 2
+  positionY.value = -top.value * 2
+})
 </script>
 
 <template>
@@ -18,7 +62,11 @@ const activeIndex = ref(0)
     <div class="middle" ref="target">
       <img :src="imageList[activeIndex]" alt="" />
       <!-- 蒙层小滑块 -->
-      <div class="layer" :style="{ left: `0px`, top: `0px` }"></div>
+      <div
+        v-show="!isOutside"
+        class="layer"
+        :style="{ left: `${left}px`, top: `${top}px` }"
+      ></div>
     </div>
     <!-- 小图列表 -->
     <ul class="small">
@@ -36,12 +84,12 @@ const activeIndex = ref(0)
       class="large"
       :style="[
         {
-          backgroundImage: `url(${imageList[0]})`,
-          backgroundPositionX: `0px`,
-          backgroundPositionY: `0px`
+          backgroundImage: `url(${imageList[activeIndex]})`,
+          backgroundPositionX: `${positionX}px`,
+          backgroundPositionY: `${positionY}px`
         }
       ]"
-      v-show="false"
+      v-show="!isOutside"
     ></div>
   </div>
 </template>
