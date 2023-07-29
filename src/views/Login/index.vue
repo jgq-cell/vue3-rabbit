@@ -1,9 +1,12 @@
 <script setup>
 import { ref } from 'vue'
+// trigger: 输入框验证选‘blur:失去焦点验证’，
+//         下拉框、日期选择、复单选框选‘change:值发生改变验证’
 // 表单校验（账号+密码）-表单对象
 const form = ref({
   account: '',
-  password: ''
+  password: '',
+  agree: false
 })
 // 表单校验（账号+密码）-规则对象
 const rules = {
@@ -11,6 +14,18 @@ const rules = {
   password: [
     { required: true, message: '密码不能为空', trigger: 'blur' },
     { min: 6, max: 14, message: '密码长度为6~14个字符', trigger: 'blur' }
+  ],
+  agree: [
+    {
+      validator: (rule, value, callback) => {
+        // 自定义校验逻辑
+        if (!value) {
+          return callback(new Error('请勾选同意条款'))
+        } else {
+          callback()
+        }
+      }
+    }
   ]
 }
 </script>
@@ -49,8 +64,8 @@ const rules = {
               <el-form-item label="密码" prop="password">
                 <el-input v-model="form.password" />
               </el-form-item>
-              <el-form-item label-width="22px">
-                <el-checkbox size="large">
+              <el-form-item label-width="22px" prop="agree">
+                <el-checkbox size="large" v-model="form.agree">
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
