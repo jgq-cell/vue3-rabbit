@@ -1,5 +1,12 @@
 <script setup>
 import { ref } from 'vue'
+import { useUserStore } from '@/stores/user'
+import 'element-plus/theme-chalk/el-message.css'
+import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const userStore = useUserStore()
+
 // trigger: 输入框验证选‘blur:失去焦点验证’，
 //         下拉框、日期选择、复单选框选‘change:值发生改变验证’
 // 表单校验（账号+密码）-表单对象
@@ -28,6 +35,25 @@ const rules = {
     }
   ]
 }
+// 获取form表单组件实例。做统一校验
+const formRef = ref(null)
+const doLogin = () => {
+  // 调用实例方法：valid->所有校验都通过为true
+  const { account, password } = form.value
+  formRef.value.validate(async (valid) => {
+    if (valid) {
+      // 登录
+      await userStore.getUserInfo({ account, password })
+      // 1.提示用户
+      ElMessage({
+        message: '登录成功',
+        type: 'success'
+      })
+      // 2.跳转首页: 不用push防止用户重复返回到登录页
+      router.replace({ path: '/' })
+    }
+  })
+}
 </script>
 
 <template>
@@ -54,6 +80,7 @@ const rules = {
             <el-form
               :model="form"
               :rules="rules"
+              ref="formRef"
               label-position="right"
               label-width="60px"
               status-icon
@@ -69,7 +96,9 @@ const rules = {
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="doLogin()"
+                >点击登录</el-button
+              >
             </el-form>
           </div>
         </div>
