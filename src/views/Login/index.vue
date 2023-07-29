@@ -1,7 +1,19 @@
 <script setup>
-
+import { ref } from 'vue'
+// 表单校验（账号+密码）-表单对象
+const form = ref({
+  account: '',
+  password: ''
+})
+// 表单校验（账号+密码）-规则对象
+const rules = {
+  account: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+  password: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    { min: 6, max: 14, message: '密码长度为6~14个字符', trigger: 'blur' }
+  ]
+}
 </script>
-
 
 <template>
   <div>
@@ -24,16 +36,21 @@
         </nav>
         <div class="account-box">
           <div class="form">
-            <el-form label-position="right" label-width="60px"
-              status-icon>
-              <el-form-item  label="账户">
-                <el-input/>
+            <el-form
+              :model="form"
+              :rules="rules"
+              label-position="right"
+              label-width="60px"
+              status-icon
+            >
+              <el-form-item label="账户" prop="account">
+                <el-input v-model="form.account" />
               </el-form-item>
-              <el-form-item label="密码">
-                <el-input/>
+              <el-form-item label="密码" prop="password">
+                <el-input v-model="form.password" />
               </el-form-item>
               <el-form-item label-width="22px">
-                <el-checkbox  size="large">
+                <el-checkbox size="large">
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
@@ -61,7 +78,7 @@
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style scoped lang="scss">
 .login-header {
   background: #fff;
   border-bottom: 1px solid #e4e4e4;
@@ -80,7 +97,8 @@
       height: 132px;
       width: 100%;
       text-indent: -9999px;
-      background: url("@/assets/images/logo.png") no-repeat center 18px / contain;
+      background: url('@/assets/images/logo.png') no-repeat center 18px /
+        contain;
     }
   }
 
@@ -157,7 +175,7 @@
       color: #999;
       display: inline-block;
 
-      ~a {
+      ~ a {
         border-left: 1px solid #ccc;
       }
     }
@@ -188,7 +206,7 @@
         position: relative;
         height: 36px;
 
-        >i {
+        > i {
           width: 34px;
           height: 34px;
           background: #cfcdcd;
@@ -233,7 +251,7 @@
         }
       }
 
-      >.error {
+      > .error {
         position: absolute;
         font-size: 12px;
         line-height: 28px;
