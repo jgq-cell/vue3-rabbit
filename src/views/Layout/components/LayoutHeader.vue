@@ -1,4 +1,5 @@
 <script setup>
+import HeaderCart from '@/views/Layout/components/HeaderCart.vue'
 import { useCategoryStore } from '@/stores/category'
 // 触发获取导航列表的action
 const categoryStore = useCategoryStore()
@@ -19,7 +20,7 @@ const categoryStore = useCategoryStore()
           v-for="item in categoryStore.CategoryList"
           :key="item.id"
         >
-        <!-- RouterLink active-class属性： -->
+          <!-- RouterLink active-class属性： -->
           <RouterLink active-class="active" :to="`/category/${item.id}`">{{
             item.name
           }}</RouterLink>
@@ -30,6 +31,7 @@ const categoryStore = useCategoryStore()
         <input type="text" placeholder="搜一搜" />
       </div>
       <!-- 头部购物车 -->
+      <HeaderCart />
     </div>
   </header>
 </template>

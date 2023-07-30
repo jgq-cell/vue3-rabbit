@@ -20,9 +20,18 @@ export const useCartStore = defineStore(
         cartList.value.push(goods)
       }
     }
+    // 3、定义action - delCart
+    const delCart = (skuId) => {
+      const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+      if (idx !== -1) {
+        // 商品在购物车-删除
+        cartList.value.splice(idx, 1)
+      }
+    }
     return {
       cartList,
-      addCart
+      addCart,
+      delCart
     }
   },
   { persist: true }
