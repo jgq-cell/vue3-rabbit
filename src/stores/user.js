@@ -6,7 +6,7 @@ export const useUserStore = defineStore(
   'user',
   () => {
     // 管理用户数据管理
-    // token 用来标识当前用户是否登录，可设置过期时间
+    // token 用来标识当前用户是否登录，可以保持一定时间有效性，不操作一段时间会失效，再去请求就会出现401错误
     // pinia存储基于内存，刷新会丢失，为了保持登录状态需做持久化存储
     const userInfo = ref({})
 
