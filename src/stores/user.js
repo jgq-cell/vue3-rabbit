@@ -15,11 +15,15 @@ export const useUserStore = defineStore(
       const res = await loginAPI({ account, password })
       userInfo.value = res.result
     }
-
+    // action 退出时清除用户信息
+    const clearUserInfo = () => {
+      userInfo.value = {}
+    }
     // 暴露出管理的数据和方法
     return {
       userInfo,
-      getUserInfo
+      getUserInfo,
+      clearUserInfo
     }
   },
   // 用户数据持久化：设置state的同时，会同步在LocalStorege
