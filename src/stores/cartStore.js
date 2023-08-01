@@ -28,7 +28,7 @@ export const useCartStore = defineStore(
         cartList.value.splice(idx, 1)
       }
     }
-    // 3、定义computed - 依赖属性变化会立刻计算
+    // 4、定义computed - 依赖属性变化会立刻计算
     // 总数量=所有商品的count之和
     // reduce函数：第一个参数a 初始化为0， 第二个参数c 是数组当前值，每次运算后将结果赋值给a
     const allCount = computed(() =>
@@ -39,12 +39,19 @@ export const useCartStore = defineStore(
       cartList.value.reduce((a, c) => a + c.count * c.price, 0)
     )
 
+    // 5、定义action - 单选功能
+    const singleCheck = (skuId, selected) => {
+      // 通过skuId找到需修改的一项， 把它修改为传过来的selected
+      const item = cartList.value.find((item) => item.skuId == skuId)
+      item.selected = selected
+    }
     return {
       cartList,
       addCart,
       delCart,
       allCount,
-      allPrice
+      allPrice,
+      singleCheck
     }
   },
   { persist: true }
