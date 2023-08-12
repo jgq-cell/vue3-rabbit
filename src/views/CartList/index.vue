@@ -57,7 +57,7 @@ const allCheck = (selected) => {
                 <p>&yen;{{ i.price }}</p>
               </td>
               <td class="tc">
-                <el-input-number v-model="i.count" />
+                <el-input-number v-model="i.count" min="1" />
               </td>
               <td class="tc">
                 <p class="f16 red">&yen;{{ (i.price * i.count).toFixed(2) }}</p>
@@ -68,7 +68,7 @@ const allCheck = (selected) => {
                     title="确认删除吗?"
                     confirm-button-text="确认"
                     cancel-button-text="取消"
-                    @confirm="delCart(i)"
+                    @confirm="cartStore.delCart(i.skuId)"
                   >
                     <template #reference>
                       <a href="javascript:;">删除</a>
@@ -92,8 +92,9 @@ const allCheck = (selected) => {
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          共 {{ cartStore.allCount }} 件商品，已选择 2 件，商品合计：
-          <span class="red">¥ {{ cartStore.allPrice.toFixed(2) }} </span>
+          共 {{ cartStore.allCount }} 件商品，已选择
+          {{ cartStore.selectedCount }} 件，商品合计：
+          <span class="red">¥ {{ cartStore.selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
           <el-button size="large" type="primary">下单结算</el-button>
