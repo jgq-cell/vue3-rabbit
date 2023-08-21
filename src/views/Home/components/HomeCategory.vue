@@ -1,5 +1,5 @@
 <script setup>
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 // 读取pinia管理的数据(layout已经加载过方法)
 const categoryStore = useCategoryStore()
 </script>
@@ -152,3 +152,4 @@ const categoryStore = useCategoryStore()
   }
 }
 </style>
+@/stores/categoryStore

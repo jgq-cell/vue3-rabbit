@@ -1,5 +1,5 @@
 <script setup>
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 // VueUse: 获取基于window窗口的实时滚动距离
 import { useScroll } from '@vueuse/core'
 const { y } = useScroll(window)
@@ -117,3 +117,4 @@ const categoryStore = useCategoryStore()
   }
 }
 </style>
+@/stores/categoryStore

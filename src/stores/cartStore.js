@@ -2,8 +2,8 @@
 
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { useUserStore } from './user'
-import { insertCartAPI, findNewCartListAPI } from '@/apis/cart'
+import { useUserStore } from './userStore'
+import { insertCartAPI, findNewCartListAPI, delCartAPI } from '@/apis/cart'
 
 export const useCartStore = defineStore(
   'cart',
@@ -13,6 +13,12 @@ export const useCartStore = defineStore(
     const isLogin = computed(() => useStore.userInfo.token)
     // 1、定义state - cartList
     const cartList = ref([])
+
+    // 获取最新购物车列表
+    const updateNewList = async () => {
+      const res = await findNewCartListAPI()
+      cartList.value = res.result
+    }
     // 2、定义action - addCart
     const addCart = async (goods) => {
       const { skuId, count } = goods
@@ -21,8 +27,7 @@ export const useCartStore = defineStore(
         // 加入购物车
         await insertCartAPI({ skuId, count })
         // 覆盖本地购物车列表
-        const res = await findNewCartListAPI()
-        cartList.value = res.result
+        updateNewList()
       } else {
         // 添加购物车操作
         const item = cartList.value.find((item) => goods.skuId === item.skuId)
@@ -36,13 +41,21 @@ export const useCartStore = defineStore(
       }
     }
     // 3、定义action - delCart
-    const delCart = (skuId) => {
-      const idx = cartList.value.findIndex((item) => skuId === item.skuId)
-      if (idx !== -1) {
-        // 商品在购物车-删除
-        cartList.value.splice(idx, 1)
+    const delCart = async (skuId) => {
+      if (isLogin.value) {
+        // 登录之后的删除购物车逻辑
+        await delCartAPI([skuId])
+        // 覆盖本地购物车列表
+        updateNewList()
+      } else {
+        const idx = cartList.value.findIndex((item) => skuId === item.skuId)
+        if (idx !== -1) {
+          // 商品在购物车-删除
+          cartList.value.splice(idx, 1)
+        }
       }
     }
+
     // 4、定义computed - 依赖属性变化会立刻计算
     // 总数量=所有商品的count之和
     // reduce函数：第一个参数a 初始化为0， 第二个参数c 是数组当前值，每次运算后将结果赋值给a

@@ -1,6 +1,6 @@
 <script setup>
 import HeaderCart from '@/views/Layout/components/HeaderCart.vue'
-import { useCategoryStore } from '@/stores/category'
+import { useCategoryStore } from '@/stores/categoryStore'
 // 触发获取导航列表的action
 const categoryStore = useCategoryStore()
 </script>
@@ -139,3 +139,4 @@ const categoryStore = useCategoryStore()
   }
 }
 </style>
+@/stores/categoryStore
