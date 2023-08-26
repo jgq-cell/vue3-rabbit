@@ -60,6 +60,7 @@ export const useCartStore = defineStore(
     const clearCart = () => {
       cartList.value = []
     }
+
     // 5、定义computed - 依赖属性变化会立刻计算
     // 总数量=所有商品的count之和
     // reduce函数：第一个参数a 初始化为0， 第二个参数c 是数组当前值，每次运算后将结果赋值给a
@@ -98,6 +99,7 @@ export const useCartStore = defineStore(
       addCart,
       delCart,
       clearCart,
+      updateNewList,
       allCount,
       allPrice,
       singleCheck,
