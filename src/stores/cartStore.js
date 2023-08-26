@@ -56,7 +56,11 @@ export const useCartStore = defineStore(
       }
     }
 
-    // 4、定义computed - 依赖属性变化会立刻计算
+    // 4、定义action - 清除购物车
+    const clearCart = () => {
+      cartList.value = []
+    }
+    // 5、定义computed - 依赖属性变化会立刻计算
     // 总数量=所有商品的count之和
     // reduce函数：第一个参数a 初始化为0， 第二个参数c 是数组当前值，每次运算后将结果赋值给a
     const allCount = computed(() =>
@@ -78,13 +82,13 @@ export const useCartStore = defineStore(
         .filter((item) => item.selected)
         .reduce((a, c) => a + c.count * c.price, 0)
     )
-    // 5、定义action - 单选功能
+    //6、定义action - 单选功能
     const singleCheck = (skuId, selected) => {
       // 通过skuId找到需修改的一项， 把它修改为传过来的selected
       const item = cartList.value.find((item) => item.skuId == skuId)
       item.selected = selected
     }
-    // 6、定义action - 全选功能
+    // 7、定义action - 全选功能
     const isAll = computed(() => cartList.value.every((item) => item.selected))
     const allCheck = (selected) => {
       cartList.value.forEach((item) => (item.selected = selected))
@@ -93,6 +97,7 @@ export const useCartStore = defineStore(
       cartList,
       addCart,
       delCart,
+      clearCart,
       allCount,
       allPrice,
       singleCheck,
